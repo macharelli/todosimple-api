@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,15 +28,16 @@ public class User {
     private Long id;
 
     @Column(name = "username",unique = true, length = 100, nullable = false)
-    @NotBlank(groups = {CreateUser.class)
+    @NotBlank(groups = {CreateUser.class})
     @Size(groups = {CreateUser.class}, min=4, max = 100)
     private String username;
-    @Column(name = "password",unique = true, length = 30, nullable = false)
+    @Column(name = "password", length = 30, nullable = false)
     @NotBlank(groups = {CreateUser.class,UpdateUser.class})
     @Size(groups = {CreateUser.class,UpdateUser.class},min=6, max = 30)
     private String password;
 
-  //  private List<Task> tasks = new ArrayList<Task>()
+    @OneToMany(mappedBy = "users")
+    private List<Task> tasks = new ArrayList<Task>();
 
 
     @Override
