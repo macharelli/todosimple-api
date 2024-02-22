@@ -1,5 +1,7 @@
 package com.Macharelli.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -31,14 +33,19 @@ public class User {
     @NotBlank(groups = {CreateUser.class})
     @Size(groups = {CreateUser.class}, min=4, max = 100)
     private String username;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", length = 30, nullable = false)
     @NotBlank(groups = {CreateUser.class,UpdateUser.class})
     @Size(groups = {CreateUser.class,UpdateUser.class},min=6, max = 30)
     private String password;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     private List<Task> tasks = new ArrayList<Task>();
-
+    @JsonIgnore
+    public List<Task> getTasks() {
+        return tasks;
+    }
 
     @Override
     public boolean equals(Object o) {
