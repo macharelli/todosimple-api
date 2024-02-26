@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -24,11 +23,6 @@ public class TaskService {
         return task.orElseThrow(()->new RuntimeException(
               "Tarefas não encontrada! Id:"+ id + ", Tipo: " + Task.class.getName()
         ));
-    }
-
-    public List<Task> findAllByUserId(Long userId){
-        List<Task>tasks = this.taskRepository.findByUser_Id(userId);
-        return tasks;
     }
     @Transactional
     public Task create(Task obj){
