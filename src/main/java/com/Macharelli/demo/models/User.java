@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +13,7 @@ import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
+
 @Getter
 @Setter
 @Entity
@@ -40,6 +38,7 @@ public class User {
     @Size(groups = {CreateUser.class,UpdateUser.class},min=6, max = 30)
     private String password;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "user")
     private List<Task> tasks = new ArrayList<Task>();
     @JsonIgnore

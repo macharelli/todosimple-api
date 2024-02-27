@@ -3,6 +3,8 @@ package com.Macharelli.demo.services;
 import com.Macharelli.demo.models.User;
 import com.Macharelli.demo.repositories.TaskRepository;
 import com.Macharelli.demo.repositories.UserRepository;
+import com.Macharelli.demo.services.exceptions.DataBidingViolationException;
+import com.Macharelli.demo.services.exceptions.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +21,7 @@ public class UserService {
 
     public User findById(Long id){
         Optional<User>user = this.userRepository.findById(id);
-        return user.orElseThrow(()-> new RuntimeException(
+        return user.orElseThrow(()-> new ObjectNotFoundException(
                 "Usuário não encontrado ! Id: " + id + ", Tipo:" + User.class.getName()));
     }
     @Transactional
@@ -41,7 +43,7 @@ public class UserService {
         try{
             this.userRepository.deleteById(id);
         }catch(RuntimeException e){
-            throw new RuntimeException("Não é possivel excluir pois há entidades relacionadas!");
+            throw new DataBidingViolationException("Não é possivel excluir pois há entidades relacionadas!");
         }
     }
 

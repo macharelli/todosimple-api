@@ -4,6 +4,8 @@ import com.Macharelli.demo.models.Task;
 import com.Macharelli.demo.models.User;
 import com.Macharelli.demo.repositories.TaskRepository;
 import com.Macharelli.demo.repositories.UserRepository;
+import com.Macharelli.demo.services.exceptions.DataBidingViolationException;
+import com.Macharelli.demo.services.exceptions.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +22,7 @@ public class TaskService {
 
     public Task findById(Long id){
         Optional<Task> task = this.taskRepository.findById(id);
-        return task.orElseThrow(()->new RuntimeException(
+        return task.orElseThrow(()->new ObjectNotFoundException(
               "Tarefas não encontrada! Id:"+ id + ", Tipo: " + Task.class.getName()
         ));
     }
@@ -44,7 +46,7 @@ public class TaskService {
         try{
             this.taskRepository.deleteById(id);
         }catch (RuntimeException e){
-            throw new RuntimeException("Não é possivel excluir pois há entidades relacionadas!");
+            throw new DataBidingViolationException("Não é possivel excluir pois há entidades relacionadas!");
         }
     }
 

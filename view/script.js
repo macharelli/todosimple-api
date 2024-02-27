@@ -4,7 +4,8 @@ async function getAPI(url) {
     const response = await fetch(url, { method: "GET" });
     const data = await response.json();
     console.log(data);
-    return data;
+    if(response) hideLoader();
+    show (data);
 }
 
 function hideLoader() {
@@ -34,4 +35,4 @@ function show(tasks) {
     hideLoader();
 }
 
-getAPI(url).then(show);
+getAPI(url);
