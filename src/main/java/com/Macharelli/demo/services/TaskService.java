@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -48,6 +49,10 @@ public class TaskService {
         }catch (RuntimeException e){
             throw new DataBidingViolationException("Não é possivel excluir pois há entidades relacionadas!");
         }
+    }
+    public List<Task> findAllByUserId(Long userId){
+        List<Task>tasks = this.taskRepository.findByUser_Id(userId);
+        return tasks;
     }
 
 
