@@ -1,5 +1,6 @@
 package com.Macharelli.demo.models;
 
+import com.Macharelli.demo.models.enums.ProfileEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -7,9 +8,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,18 +33,29 @@ public class User {
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "password", length = 30, nullable = false)
+    @Column(name = "password", length = 60, nullable = false)
     @NotBlank(groups = {CreateUser.class,UpdateUser.class})
-    @Size(groups = {CreateUser.class,UpdateUser.class},min=6, max = 30)
+    @Size(groups = {CreateUser.class,UpdateUser.class},min=8, max = 30)
     private String password;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "user")
     private List<Task> tasks = new ArrayList<Task>();
-    @JsonIgnore
-    public List<Task> getTasks() {
-        return tasks;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @CollectionTable(name = "user_profile")
+    @Column(name = "profile", nullable = false)
+    private Set<Integer>profiles = new HashSet<>();
+
+    public Set<ProfileEnum> getProfiles(){
+        return this.profiles.stream().map(ProfileEnum::toEnum).collect(Collectors.toSet());
     }
+
+    public void addProfile(ProfileEnum profileEnum){
+        this.profiles.add(profileEnum.getCode());
+    }
+
 
     @Override
     public boolean equals(Object o) {
