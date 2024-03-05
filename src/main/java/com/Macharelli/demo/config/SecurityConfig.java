@@ -1,6 +1,7 @@
 package com.Macharelli.demo.config;
 
 import com.Macharelli.demo.security.JwtAuthenticationFilter;
+import com.Macharelli.demo.security.JwtAuthorizationFilter;
 import com.Macharelli.demo.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -61,7 +62,7 @@ public class SecurityConfig {
                 http.authenticationManager(authenticationManager);
 
         http.addFilter(new JwtAuthenticationFilter(this.authenticationManager, this.jwtUtil));
-
+        http.addFilter(new JwtAuthorizationFilter(this.authenticationManager, this.jwtUtil,this.userDetailsService));
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();

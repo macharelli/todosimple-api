@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             return authentication;
 
-        }catch (Exception e){
+        }catch (IOException e){
             throw new RuntimeException();
 
         }
@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserSpringSecurity userSpringSecurity = (UserSpringSecurity) authentication.getPrincipal();
         String username = userSpringSecurity.getUsername();
         String token = this.jwtUtil.generationToken(username);
-        response.addHeader("Authorization", "Bearer: " + token);
+        response.addHeader("Authorization", "Bearer :" + token);
         response.addHeader("acess-control-expose-headers", "Authorization");
 
 
