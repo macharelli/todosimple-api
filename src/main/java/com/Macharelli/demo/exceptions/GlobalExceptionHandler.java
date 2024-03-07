@@ -1,5 +1,6 @@
 package com.Macharelli.demo.exceptions;
 
+import com.Macharelli.demo.services.exceptions.AuthorizationException;
 import com.Macharelli.demo.services.exceptions.DataBidingViolationException;
 import com.Macharelli.demo.services.exceptions.ObjectNotFoundException;
 import jakarta.servlet.ServletException;
@@ -25,6 +26,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
 @Slf4j(topic = "GLOBAL_EXCEPTION_HANDLER")
@@ -108,6 +110,43 @@ public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler impl
                 HttpStatus.CONFLICT,
                 request);
     }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<Object> handleAuthenticationException(
+        AuthenticationException authenticationException,
+        WebRequest request) {
+        log.error("Authentication error ", authenticationException);
+        return buildErrorResponse(
+                authenticationException,
+                HttpStatus.UNAUTHORIZED,
+                request);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<Object> AccessDeniedException(
+            AccessDeniedException AccessDeniedException,
+            WebRequest request) {
+        log.error("Authorization error ", AccessDeniedException);
+        return buildErrorResponse(
+                AccessDeniedException,
+                HttpStatus.FORBIDDEN,
+                request);
+    }
+    @ExceptionHandler(AuthorizationException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<Object> AuthorizationException(
+            AuthorizationException AuthorizationException,
+            WebRequest request) {
+        log.error("Authorization error ", AuthorizationException);
+        return buildErrorResponse(
+                AuthorizationException,
+                HttpStatus.FORBIDDEN,
+                request);
+    }
+
+
 
 
 
