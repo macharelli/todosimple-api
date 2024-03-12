@@ -26,7 +26,7 @@ public class UserController {
 
     }
     @PostMapping
-    @Validated(User.CreateUser.class)
+
     public ResponseEntity<Void> createUser(@Valid @RequestBody User user){
         this.userService.create(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
