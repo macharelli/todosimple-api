@@ -3,6 +3,7 @@ package com.Macharelli.demo.services;
 import com.Macharelli.demo.models.Task;
 import com.Macharelli.demo.models.User;
 import com.Macharelli.demo.models.enums.ProfileEnum;
+import com.Macharelli.demo.models.projection.TasksProjection;
 import com.Macharelli.demo.repositories.TaskRepository;
 import com.Macharelli.demo.security.UserSpringSecurity;
 import com.Macharelli.demo.services.exceptions.AuthorizationException;
@@ -61,12 +62,12 @@ public class TaskService {
             throw new DataBidingViolationException("Não é possivel excluir pois há entidades relacionadas!");
         }
     }
-    public List<Task> findAllByUser(){
+    public List<TasksProjection> findAllByUser(){
         UserSpringSecurity userSpringSecurity = UserService.authenticated();
         if (Objects.isNull(userSpringSecurity)){
             throw new AuthorizationException("Acesso negado!");
         }
-        List<Task>tasks = this.taskRepository.findByUser_Id(userSpringSecurity.getId());
+        List<TasksProjection>tasks = this.taskRepository.findByUser_Id(userSpringSecurity.getId());
         return tasks;
     }
 

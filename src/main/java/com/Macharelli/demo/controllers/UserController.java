@@ -1,6 +1,8 @@
 package com.Macharelli.demo.controllers;
 
 import com.Macharelli.demo.models.User;
+import com.Macharelli.demo.models.dto.UserCreateDTO;
+import com.Macharelli.demo.models.dto.UserUpdateDTO;
 import com.Macharelli.demo.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,17 +28,18 @@ public class UserController {
 
     }
     @PostMapping
-
-    public ResponseEntity<Void> createUser(@Valid @RequestBody User user){
-        this.userService.create(user);
+    public ResponseEntity<Void> createUser(@Valid @RequestBody UserCreateDTO userCreateDTO){
+        User user = this.userService.fromDTO(userCreateDTO);
+        User newUser = this.userService.create(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(user.getId()).toUri();
+                .path("/{id}").buildAndExpand(newUser.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
     @PutMapping("/{id}")
-    @Validated(User.UpdateUser.class)
-    public ResponseEntity<Void> update(@Valid @RequestBody User user,@PathVariable Long id){
-        user.setId(id);
+
+    public ResponseEntity<Void> update(@Valid @RequestBody UserUpdateDTO userUpdateDTO, @PathVariable Long id){
+        userUpdateDTO.setId(id);
+        User user = this.userService.fromDTO(userUpdateDTO);
         this.userService.update(user);
         return ResponseEntity.noContent().build();
 

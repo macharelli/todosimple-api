@@ -20,22 +20,21 @@ import java.util.stream.Collectors;
 @Table(name = "users")
 public class User {
 
-    public interface CreateUser{}
-    public interface UpdateUser{}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",unique = true)
     private Long id;
 
     @Column(name = "username",unique = true, length = 100, nullable = false)
-    @NotBlank(groups = {CreateUser.class})
-    @Size(groups = {CreateUser.class}, min=4, max = 100)
+    @NotBlank
+    @Size( min=4, max = 100)
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", length = 60, nullable = false)
-    @NotBlank(groups = {CreateUser.class,UpdateUser.class})
-    @Size(groups = {CreateUser.class,UpdateUser.class},min=8, max = 30)
+    @NotBlank
+    @Size(min=8, max = 30)
     private String password;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

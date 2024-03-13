@@ -58,8 +58,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                 .requestMatchers(PUBLIC_MATCHERS).permitAll()
-                .anyRequest().authenticated());
-                http.authenticationManager(authenticationManager);
+                .anyRequest().authenticated())
+                .authenticationManager(authenticationManager);
 
         http.addFilter(new JwtAuthenticationFilter(this.authenticationManager, this.jwtUtil));
         http.addFilter(new JwtAuthorizationFilter(this.authenticationManager, this.jwtUtil,this.userDetailsService));

@@ -1,6 +1,7 @@
 package com.Macharelli.demo.controllers;
 
 import com.Macharelli.demo.models.Task;
+import com.Macharelli.demo.models.projection.TasksProjection;
 import com.Macharelli.demo.services.TaskService;
 import com.Macharelli.demo.services.UserService;
 import jakarta.validation.Valid;
@@ -53,8 +54,8 @@ public class TaskController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<Task>> findAllByUser(){
-        List<Task> tasks = this.taskService.findAllByUser();
+    public ResponseEntity<List<TasksProjection>> findAllByUser(){
+        List<TasksProjection> tasks = this.taskService.findAllByUser();
         return ResponseEntity.ok().body(tasks);
     }
 
